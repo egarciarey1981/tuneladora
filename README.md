@@ -4,7 +4,7 @@ Harto de tener que entrar en Kubernetes para consultar el namespace, el nombre d
 
 Lo dejo aquí por si a alguien le puede ser útil.
 
-```python
+```shell
 python tuneladora.py
 
 Lista de contextos disponibles:
