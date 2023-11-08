@@ -2,6 +2,8 @@
 
 Harto de tener que entrar en Kubernetes para consultar el namespace, el nombre del servicio y el puerto para crear un túnel a un servicio, he creado este script en Python acelerar la creación de túneles.
 
+Lo dejo aquí por si a alguien le puede ser útil.
+
 ```python
 python tuneladora.py
 
@@ -34,4 +36,3 @@ Para acceder al servicio, ejecuta el siguiente comando:
 kubectl port-forward --context contexto-a --namespace namespace-a service/servicio-a 9306:9306 --address 0.0.0.0
 ```
 
-Lo dejo aquí por si a alguien le puede ser útil.
