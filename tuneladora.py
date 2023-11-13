@@ -62,18 +62,9 @@ def seleccionar_namespace(contexto):
         print("Error al obtener la lista de namespaces de Kubernetes:", e)
         return []
 
-
-def seleccionar_puerto(namespace, servicio):
+def seleccionar_servicio(namespace, contexto):
     try:
-        output = subprocess.check_output(["kubectl", "get", "svc", servicio, "-n", namespace, "-o", "jsonpath='{.spec.ports[0].port}'"], text=True)
-        return output.replace("'", "")
-    except subprocess.CalledProcessError as e:
-        print("Error al obtener el puerto del servicio de Kubernetes:", e)
-        return []
-
-def seleccionar_servicio(namespace):
-    try:
-        output = subprocess.check_output(["kubectl", "get", "services", "-o", "name", "--namespace", namespace], text=True)
+        output = subprocess.check_output(["kubectl", "get", "svc", "-n", namespace, "-o", "name", "--context", contexto], text=True)
         servicios = output.splitlines()
         print("\nLista de servicios disponibles:")
         for i, servicio in enumerate(servicios):
@@ -94,6 +85,14 @@ def seleccionar_servicio(namespace):
         print("Error al obtener la lista de servicios de Kubernetes:", e)
         return []
 
+def seleccionar_puerto(namespace, servicio):
+    try:
+        output = subprocess.check_output(["kubectl", "get", "svc", servicio, "-n", namespace, "-o", "jsonpath='{.spec.ports[0].port}'"], text=True)
+        return output.replace("'", "")
+    except subprocess.CalledProcessError as e:
+        print("Error al obtener el puerto del servicio de Kubernetes:", e)
+        return []
+
 if __name__ == "__main__":
     contextos = listar_contextos()
     if not contextos:
@@ -101,7 +100,7 @@ if __name__ == "__main__":
     else:
         contexto_seleccionado = seleccionar_contexto(contextos)
         namespace_seleccionado = seleccionar_namespace(contexto_seleccionado)
-        servicio_seleccionado = seleccionar_servicio(namespace_seleccionado)
+        servicio_seleccionado = seleccionar_servicio(namespace_seleccionado, contexto_seleccionado)
         puerto = seleccionar_puerto(namespace_seleccionado, servicio_seleccionado)
 
         print(f"\nPara acceder al servicio, ejecuta el siguiente comando:\n")
