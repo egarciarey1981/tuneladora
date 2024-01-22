@@ -43,7 +43,7 @@ def seleccionar_namespace(contexto):
             for i in range(1, middle + 1):
                 print(f"{str(i).rjust(2)}. {my_dict[i]:<30}", end="")
                 if i + middle <= len(my_dict):
-                    print(f"{str(i+1).rjust(2)}. {my_dict[i+middle]:<30}")
+                    print(f"{str(i+middle).rjust(2)}. {my_dict[i+middle]:<30}")
         else:
             for i, namespace in enumerate(namespaces):
                 foo = namespace.replace("namespace/", "")
