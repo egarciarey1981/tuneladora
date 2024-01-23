@@ -103,10 +103,15 @@ if __name__ == "__main__":
         namespace_seleccionado = seleccionar_namespace(contexto_seleccionado)
         servicio_seleccionado = seleccionar_servicio(contexto_seleccionado, namespace_seleccionado)
         puerto_remoto = seleccionar_puerto_remoto(contexto_seleccionado, namespace_seleccionado, servicio_seleccionado)
+        sistema_operativo = input(f"\nSistema operativo:\n 1. Linux \n 2. Mac \n\nSelecciona el sistema operativo deseado (1, 2): ")
         puerto_local = input(f"\nIntroduce el puerto local deseado ({puerto_remoto}): ")
 
         if puerto_local == "":
             puerto_local = puerto_remoto
 
+        ip_local = ""
+        if sistema_operativo == "1":
+            ip_local = "--address 0.0.0.0"
+
         print(f"\nPara acceder al servicio, ejecuta el siguiente comando:\n")
-        print(f"kubectl port-forward --context {contexto_seleccionado} --namespace {namespace_seleccionado} service/{servicio_seleccionado} {puerto_local}:{puerto_remoto} --address 0.0.0.0\n")
+        print(f"kubectl port-forward --context {contexto_seleccionado} --namespace {namespace_seleccionado} service/{servicio_seleccionado} {puerto_local}:{puerto_remoto} {ip_local}")
