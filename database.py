@@ -64,7 +64,7 @@ def seleccionar_instancia(proyecto):
         print("Error al obtener la lista de contextos de Kubernetes:", e)
         return []
 
-def seleccionar_puerto(proyecto, instancia):
+def seleccionar_puerto_remoto(proyecto, instancia):
     try:
         comando = [
             "gcloud",
@@ -91,7 +91,12 @@ if __name__ == "__main__":
     else:
         proyecto_seleccionado = seleccionar_proyecto(proyectos)
         instancia_seleccionada = seleccionar_instancia(proyecto_seleccionado)
-        puerto = seleccionar_puerto(proyecto_seleccionado, instancia_seleccionada)
+        puerto_remoto = seleccionar_puerto_remoto(proyecto_seleccionado, instancia_seleccionada)
+        puerto_local = input(f"\nIntroduce el puerto local deseado ({puerto_remoto}): ")
+
+        if puerto_local == "":
+            puerto_local = puerto_remoto
 
         print(f"\nPara conectar con la base de datos, ejecuta el siguiente comando:\n")
-        print(f"gcloud compute start-iap-tunnel \"{instancia_seleccionada}\" {puerto} --project {proyecto_seleccionado} --local-host-port=0.0.0.0:{puerto}\n")
+        print(f"gcloud compute start-iap-tunnel \"{instancia_seleccionada}\" {puerto_remoto} --project {proyecto_seleccionado} --local-host-port=0.0.0.0:{puerto_local}\n")
+

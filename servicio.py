@@ -86,7 +86,7 @@ def seleccionar_servicio(contexto, namespace):
         print("Error al obtener la lista de servicios de Kubernetes:", e)
         return []
 
-def seleccionar_puerto(contexto, namespace, servicio):
+def seleccionar_puerto_remoto(contexto, namespace, servicio):
     try:
         output = subprocess.check_output(["kubectl", "get", "svc", servicio, "-n", namespace, "-o", "jsonpath='{.spec.ports[0].port}'", "--context", contexto], text=True)
         return output.replace("'", "")
@@ -102,7 +102,11 @@ if __name__ == "__main__":
         contexto_seleccionado = seleccionar_contexto(contextos)
         namespace_seleccionado = seleccionar_namespace(contexto_seleccionado)
         servicio_seleccionado = seleccionar_servicio(contexto_seleccionado, namespace_seleccionado)
-        puerto = seleccionar_puerto(contexto_seleccionado, namespace_seleccionado, servicio_seleccionado)
+        puerto_remoto = seleccionar_puerto_remoto(contexto_seleccionado, namespace_seleccionado, servicio_seleccionado)
+        puerto_local = input(f"\nIntroduce el puerto local deseado ({puerto_remoto}): ")
+
+        if puerto_local == "":
+            puerto_local = puerto_remoto
 
         print(f"\nPara acceder al servicio, ejecuta el siguiente comando:\n")
-        print(f"kubectl port-forward --context {contexto_seleccionado} --namespace {namespace_seleccionado} service/{servicio_seleccionado} {puerto}:{puerto} --address 0.0.0.0\n")
+        print(f"kubectl port-forward --context {contexto_seleccionado} --namespace {namespace_seleccionado} service/{servicio_seleccionado} {puerto_local}:{puerto_remoto} --address 0.0.0.0\n")
