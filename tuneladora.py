@@ -5,8 +5,8 @@ if __name__ == "__main__":
     
     
     if tunnel_type == "1":
-        exec(open("/home/egr/repositorios/tuneladora/servicio.py").read())
+        exec(open("servicio.py").read())
     elif tunnel_type == "2":
-        exec(open("/home/egr/repositorios/tuneladora/database.py").read())
+        exec(open("database.py").read())
     else:
         print(f"\n¿DÓNDE HAS VISTO TÚ EL TÚNEL {tunnel_type}?")
