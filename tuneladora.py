@@ -9,4 +9,4 @@ if __name__ == "__main__":
     elif tunnel_type == "2":
         exec(open("database.py").read())
     else:
-        print(f"\n¿DÓNDE HAS VISTO TÚ EL TÚNEL {tunnel_type}?")
+        print(f"\n¿DÓNDE HAS VISTO TÚ EL {tunnel_type}?")
