@@ -5,6 +5,7 @@ import json
 
 def listar_proyectos():
     try:
+        print('\ngcloud projects list --format "value(projectId)" | grep fc-db')
         output = subprocess.check_output(["gcloud", "projects", "list", "--format", "value(projectId)"], text=True)
         proyectos = output.splitlines()
         proyectos = list(filter(lambda x: 'fc-db' in x, proyectos))
@@ -31,6 +32,7 @@ def seleccionar_proyecto(proyectos):
 
 def seleccionar_instancia(proyecto):
     try:
+        print(f'\ngcloud compute instances list --project {proyecto} --format "value(NAME)"')
         output = subprocess.check_output(["gcloud", "compute", "instances", "list", "--project", proyecto, "--format", "value(NAME)"], text=True)
         instancias = output.splitlines()
         print("\nLista de instancias disponibles:")
@@ -66,16 +68,8 @@ def seleccionar_instancia(proyecto):
 
 def seleccionar_puerto_remoto(proyecto, instancia):
     try:
-        comando = [
-            "gcloud",
-            "compute",
-            "instances",
-            "describe",
-            instancia,
-            "--project",
-            proyecto,
-            "--format=json"
-        ]
+        print(f'\ngcloud compute instances describe {instancia} --project {proyecto} --format=json')
+        comando = ["gcloud","compute","instances","describe",instancia,"--project",proyecto,"--format=json"]
         output = subprocess.check_output(comando, text=True)
         instancia = json.loads(output)
         return instancia["labels"]["db-port"]
